@@ -250,11 +250,13 @@ consteval bool call_signature_matches_overloads_impl(std::tuple<Ts...>)
     if constexpr (is_instantiation_of<variadic, T0>) {
         return (std::is_convertible_v<T0, Ts> && ... );
     }
-
-    // Normal overload: check if arguments are convertible to expected types
-    return std::apply([](auto... v) {
-        return (std::is_convertible_v<decltype(v), Ts> && ... );
-    }, typename TypeList::type{});
+    if constexpr (std::tuple_size_v<typename TypeList::type> == sizeof...(Ts)) {
+        // Normal overload: check if arguments are convertible to expected types
+        return std::apply([](auto... v) {
+            return (std::is_convertible_v<decltype(v), Ts> && ... );
+        }, typename TypeList::type{});
+    }
+    return false;
 }
 
 
