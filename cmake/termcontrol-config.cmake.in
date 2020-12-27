@@ -3,7 +3,7 @@
 include(CMakeFindDependencyMacro)
 
 find_dependency(fmt REQUIRED)
-find_dependency(Microsoft.GSL CONFIG REQUIRED)
+find_dependency(gsl-lite REQUIRED)
 find_dependency(ctre REQUIRED)
 find_dependency(utf8cpp REQUIRED)
 

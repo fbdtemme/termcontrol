@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <bitset>
 #include <optional>
-#include <gsl/gsl_assert>
+#include <gsl-lite/gsl-lite.hpp>
 
 #include "bitmask_operators.hpp"
 #include "formatted_size.hpp"

@@ -21,7 +21,7 @@ target_link_libraries(termcontrol
     INTERFACE
         fmt::fmt
         ctre::ctre
-        Microsoft.GSL::GSL
+        gsl::gsl-lite-v1
         utf8cpp)
 
 if (BUILD_TESTING)
@@ -76,9 +76,9 @@ if (NOT fmt_FOUND)
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
-if (NOT Microsoft.GSL_FOUND)
-    message(STATUS "Adding Microsoft.GSL to install set")
-    install(TARGETS GSL
+if (NOT gsl-lite_FOUND)
+    message(STATUS "Adding gsl-lite to install set")
+    install(TARGETS gsl-lite-v1
             EXPORT ${termcontrol_targets_export_name}
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()

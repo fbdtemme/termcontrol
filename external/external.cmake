@@ -34,18 +34,20 @@ else()
     FetchContent_MakeAvailable(utf8-cpp)
 endif()
 
+include(FetchContent)
 
-find_package(Microsoft.GSL CONFIG QUIET)
-if (Microsoft.GSL_FOUND)
-    message(STATUS "Local installation of dependency Microsoft.GSL found.")
+
+find_package(gsl-lite QUIET)
+if (gsl-lite_FOUND)
+    message(STATUS "Local installation of gsl-lite found.")
 else()
-    message(STATUS "Fetching dependency Microsoft.GSL...")
+    message(STATUS "Fetching dependency gsl-lite...")
     FetchContent_Declare(
-            Microsoft.GSL
-            GIT_REPOSITORY https://github.com/microsoft/GSL.git
+            gsl-lite
+            GIT_REPOSITORY https://github.com/gsl-lite/gsl-lite.git
             GIT_TAG        master
     )
-    FetchContent_MakeAvailable(Microsoft.GSL)
+    FetchContent_MakeAvailable(gsl-lite)
 endif()
 
 

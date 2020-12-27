@@ -9,7 +9,7 @@
 #include <ranges>
 #include <algorithm>
 #include <compare>
-#include <gsl/gsl_assert>
+#include <gsl-lite/gsl-lite.hpp>
 
 #include "control_sequence_definition.hpp"
 #include "format.hpp"
