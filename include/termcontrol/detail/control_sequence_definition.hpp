@@ -301,7 +301,7 @@ struct control_sequence_definition_tag {};
 template <typename D, typename... Ts>
 concept call_signature_matches = detail::call_signature_matches_impl<D, Ts...>();
 
-#define ANSI_DEFINE_DEFAULT_ARGUMENTS(DEFINITION, ...)       \
+#define TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(DEFINITION, ...)       \
 template <>                                               \
 struct termcontrol::detail::default_parameters<DEFINITION> { \
     static_assert(                                                                             \

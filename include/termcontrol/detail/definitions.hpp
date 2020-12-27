@@ -111,49 +111,49 @@ using set_top_and_bottom_margins  = detail::basic_control_sequence_definition<'r
 
 } // namespace definitions
 
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_absolute,    1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_backward,    1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_forward,     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::character_and_line_position,    1, 1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_absolute,         1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_backward,         1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_forward,          1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::tabulation_clear,               tabulation_clear_mode::character);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_absolute,         1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_backward,         1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_forward,          1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_absolute,    1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_backward,    1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::character_position_forward,     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::character_and_line_position,    1, 1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_absolute,         1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_backward,         1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::page_position_forward,          1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::tabulation_clear,               tabulation_clear_mode::character);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_absolute,         1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_backward,         1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::line_position_forward,          1);
 
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::delete_character,                1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::delete_line,                     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_area,                   erase_in_area_mode::after);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_character,                 1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_page,                   erase_page_mode::below);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_field,                  erase_in_field_mode::after);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_line,                   erase_line_mode::after);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::insert_character,                1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::insert_line,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::delete_character,                1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::delete_line,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_area,                   erase_in_area_mode::after);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_character,                 1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_page,                   erase_page_mode::below);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_field,                  erase_in_field_mode::after);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::erase_in_line,                   erase_line_mode::after);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::insert_character,                1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::insert_line,                     1);
 
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_backward_tabulation,      1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_character_absolute,       1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_forward_tabulation,       1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_next_line,                1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_preceding_line,           1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_tabulation_control,       cursor_tabulation_control_mode::set_character_tab);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_left,                     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_down,                     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_right,                    1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_position,                 1, 1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_up,                       1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_line_tabulation,          1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_backward_tabulation,      1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_character_absolute,       1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_forward_tabulation,       1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_next_line,                1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_preceding_line,           1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_tabulation_control,       cursor_tabulation_control_mode::set_character_tab);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_left,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_down,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_right,                    1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_position,                 1, 1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_up,                       1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::cursor_line_tabulation,          1);
 
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::next_page,                       1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::preceding_page,                  1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_down,                     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_left,                     1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_up,                       1);
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_right,                    1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::next_page,                       1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::preceding_page,                  1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_down,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_left,                     1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_up,                       1);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::scroll_right,                    1);
 
-ANSI_DEFINE_DEFAULT_ARGUMENTS(definitions::define_area_qualification, area_qualification::unprotected_unguarded);
+TERMCONTROL_DEFINE_DEFAULT_ARGUMENTS(definitions::define_area_qualification, area_qualification::unprotected_unguarded);
 
 
 inline namespace acronyms {
