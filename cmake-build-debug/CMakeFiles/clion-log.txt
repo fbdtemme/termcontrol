@@ -1,8 +1,0 @@
-/home/fbdtemme/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.6397.106/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/fbdtemme/Documents/project/torrent/termcontrol
--- Local installation of dependency ctre found.
--- Local installation of dependency utf8cpp found.
--- Local installation of dependency Microsoft.GSL found.
--- Local installation of dependency fmt found.
--- Configuring done
--- Generating done
--- Build files have been written to: /home/fbdtemme/Documents/project/torrent/termcontrol/cmake-build-debug

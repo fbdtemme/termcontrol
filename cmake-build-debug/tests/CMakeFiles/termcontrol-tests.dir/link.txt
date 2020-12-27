@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/termcontrol-tests.dir/test_control_sequence.cpp.o CMakeFiles/termcontrol-tests.dir/test_concepts.cpp.o CMakeFiles/termcontrol-tests.dir/test_color.cpp.o CMakeFiles/termcontrol-tests.dir/test_parse.cpp.o CMakeFiles/termcontrol-tests.dir/main.cpp.o  -o termcontrol-tests  /usr/local/lib64/libfmt.a 
