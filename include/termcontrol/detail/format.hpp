@@ -262,6 +262,12 @@ constexpr auto format_parameter(OutputIterator out, dec_mode value) -> OutputIte
     return format_parameter(out, std::underlying_type_t<dec_mode>(value));
 }
 
+template <typename OutputIterator>
+constexpr auto format_parameter(OutputIterator out, graphics_rendition_attribute value) -> OutputIterator
+{
+    return format_parameter(out, std::underlying_type_t<graphics_rendition_attribute>(value));
+}
+
 /// Format enums to their values but with different buffer size
 template <typename OutputIterator>
 constexpr auto format_parameter(OutputIterator out, rgb_color value) -> OutputIterator

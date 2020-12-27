@@ -107,8 +107,7 @@ TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(area_qualification, 25);
 
 
 /// Parameters for SM - SET MODE
-enum class mode : std::uint8_t
-{
+enum class mode : std::uint8_t {
     guarded_area_transfer         = 1,       ///< GUARDED AREA TRANSFER MODE (GATM)
     keyboard_action               = 2,       ///< KEYBOARD ACTION MODE (KAM)
     control_representation        = 3,       ///< CONTROL REPRESENTATION MODE (CRM)
@@ -147,8 +146,79 @@ enum class dec_mode : std::uint16_t {
 
 TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(dec_mode, 4);
 
-/// Other Set Graphics Rendition attributes that are not colors or emphasis types.
-enum class graphics_rendition_attributes { };
+/// Set Graphics Rendition attributes.
+enum class graphics_rendition_attribute {
+    default_rendition             = 0,     ///< default rendition (implementation-defined), cancels the effect of any preceding occurrence of SGR in
+                                           ///< the data stream regardless of the setting of the GRAPHIC RENDITION COMBINATION MODE (GRCM)
+    bold                          = 1,     ///< bold or increased intensity
+    faint                         = 2,     ///< faint, decreased intensity or second colour
+    italicized                    = 3,     ///< italicized
+    singly_underlined             = 4,     /// singly underlined
+    slowly_blinking               = 5,     ///< slowly blinking (less then 150 per minute)
+    rapidly_blinking              = 6,     ///< rapidly blinking (150 per minute or more)
+    negative_image                = 7,     ///< negative image
+    conceiled                     = 8,     ///< concealed characters
+    crossed_out                   = 9,     ///< crossed-out (characters still legible but marked as to be deleted)
+    primary_font                  = 10,    ///< primary (default) font
+    first_alternative_font        = 11,    ///< first alternative font
+    second_alternative_font       = 12,    ///< second alternative font
+    third_alternative_font        = 13,    ///< third alternative font
+    fourth_alternative_font       = 14,    ///< fourth alternative font
+    fifth_alternative_font        = 15,    ///< fifth alternative font
+    sixth_alternative_font        = 16,    ///< sixth alternative font
+    seventh_alternative_font      = 17,    ///< seventh alternative font
+    eighth_alternative_font       = 18,    ///< eighth alternative font
+    ninth_alternative_font        = 19,    ///< ninth alternative font
+    fraktur                       = 20,    ///< Fraktur (Gothic)
+    doubly_underlined             = 21,    ///< doubly underlined
+    not_bold_not_faint            = 22,    ///< normal colour or normal intensity (neither bold nor faint)
+    not_italicized_not_fraktur    = 23,    ///< not italicized, not fraktur
+    not_underlined                = 24,    ///< not underlined (neither singly nor doubly)
+    not_blinking                  = 25,    ///< steady (not blinking)
+    proportional_spacing          = 26,    ///< (reserved for proportional spacing as specified in CCITT Recommendation T.61)
+    positive_image                = 27,    ///< positive image
+    revealed_characters           = 28,    ///< revealed characters- 62 -
+    not_crossed_out               = 29,    ///< not crossed out
+    black_display                 = 30,    ///< black display
+    red_display                   = 31,    ///< red display
+    green_display                 = 32,    ///< green display
+    yellow_display                = 33,    ///< yellow display
+    blue_display                  = 34,    ///< blue display
+    magenta_display               = 35,    ///< magenta display
+    cyan_display                  = 36,    ///< cyan display
+    white_display                 = 37,    ///< white display
+    extended_set_foreground       = 38,    ///< (reserved for future standardization; intended for setting character foreground colour as specified in ISO 8613-6 [CCITT Recommendation T.416])
+    default_display_colour        = 39,    ///< default display colour (implementation-defined)
+    black_background              = 40,    ///< black background
+    red_background                = 41,    ///< red background
+    green_background              = 42,    ///< green background
+    yellow_background             = 43,    ///< yellow background
+    blue_background               = 44,    ///< blue background
+    magenta_background            = 45,    ///< magenta background
+    cyan_background               = 46,    ///< cyan background
+    white_background              = 47,    ///< white background
+    extended_set_background       = 48,    ///< (reserved for future standardization; intended for setting character background colour as specified in ISO 8613-6 [CCITT Recommendation T.416])
+    default_background_colour     = 49,    ///< default background colour (implementation-defined)
+    disable_proportional_spacing  = 50,    ///< (reserved for cancelling the effect of the rendering aspect established by parameter value 26)
+    encircled                     = 52,    ///< encircled
+    framed                        = 51,    ///< framed
+    overlined                     = 53,    ///< overlined
+    not_framed_not_encircled      = 54,    ///< not framed, not encircled
+    not_overlined                 = 55,    ///< not overlined
+    reserved_56                   = 56,    ///<  (reserved for future standardization)
+    reserved_57                   = 57,    ///< (reserved for future standardization)
+    reserved_58                   = 58,    ///< (reserved for future standardization)
+    reserved_59                   = 59,    ///< (reserved for future standardization)
+    ideogram_underline            = 60,    ///< ideogram underline or right side line
+    ideogram_double_underline     = 61,    ///< ideogram double underline or double line on the right side
+    ideogram_overline             = 62,    ///< ideogram overline or left side line
+    ideogram_double_overline      = 63,    ///< ideogram double overline or double line on the left side
+    ideogram_stress_marking       = 64,    ///< ideogram stress marking
+    reset_ideogram_attributes     = 65,    ///< cancels the effect of the rendition aspects established by parameter values 60 to 64
+};
+
+TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(graphics_rendition_attribute, 2);
+
 
 enum class emphasis : std::uint16_t {
     reset            = 1,

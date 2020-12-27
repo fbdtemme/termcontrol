@@ -116,6 +116,6 @@ constexpr text_style em(emphasis e) noexcept
 
 TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(text_style,
         detail::max_formatted_size_v<emphasis>
-+ 2 * detail::max_formatted_size_v<rgb_color>);
+        + 2 * detail::max_formatted_size_v<rgb_color>);
 
 }

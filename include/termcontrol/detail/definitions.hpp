@@ -53,6 +53,7 @@ using line_position_forward       = detail::basic_control_sequence_definition<'e
 // Presentation control functions
 using select_graphics_rendition   = detail::basic_control_sequence_definition<'m',
                                         detail::overload_set<
+                                                detail::argument_pack<graphics_rendition_attribute>,
                                                 detail::argument_pack<text_style>,
                                                 detail::argument_pack<detail::variadic<std::uint8_t>>>>;
 
