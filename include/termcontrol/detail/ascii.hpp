@@ -184,7 +184,7 @@ static constexpr char const delete_               = 127; // [delete]
 
 /// Return the ascii character with given Row/Column representation.
 template <typename CharT = char, typename CharTraits = std::char_traits<CharT>>
-constexpr char column_row(std::uint8_t col, std::uint8_t row)
+constexpr char from_column_row(std::uint8_t col, std::uint8_t row)
 { return CharTraits::to_char_type((16 * col) + row); }
 
 }
