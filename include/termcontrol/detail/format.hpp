@@ -14,8 +14,8 @@
 #include <fmt/format.h>
 #include <fmt/core.h>
 
-#include "concepts.hpp"
 #include "formatted_size.hpp"
+#include "concepts.hpp"
 #include "parameters.hpp"
 #include "color.hpp"
 #include "control_sequence_definition.hpp"
@@ -460,7 +460,8 @@ namespace rng = std::ranges;
 /// Write a control sequence formatted with `parameters` according to the control sequence definition `Def` and
 /// return the result as a std::string.
 template <control_sequence_definition Def, typename... Ts>
-    requires call_signature_matches<Def, Ts...>
+    requires call_signature_matches<Def, Ts...> &&
+             (!detail::first_element_is_control_sequence_definition_tag<Ts...>)
 auto format(Ts... parameters) -> std::string
 {
     std::string result {};
@@ -496,7 +497,7 @@ auto format(Ts... parameters) -> std::string
 /// return the result as a std::string.
 template <control_sequence_definition Def, typename... Ts>
     requires call_signature_matches<Def, Ts...>
-auto format(detail::control_sequence_definition_tag<Def>, Ts... parameters) -> std::string
+std::string format(detail::control_sequence_definition_tag<Def>, Ts... parameters)
 {
     return format<Def>(parameters...);
 }
@@ -506,7 +507,8 @@ auto format(detail::control_sequence_definition_tag<Def>, Ts... parameters) -> s
 /// write the result to output iterator `out`.
 template <control_sequence_definition Def, typename OIter, typename... Ts>
     requires call_signature_matches<Def, Ts...> &&
-             std::output_iterator<OIter, char>
+            (!detail::first_element_is_control_sequence_definition_tag<Ts...>) &&
+            std::output_iterator<OIter, char>
 constexpr auto format_to(OIter it, Ts... parameters) -> OIter
 {
     auto [in, out] = rng::copy(control_functions::control_sequence_introducer, it);
@@ -538,25 +540,27 @@ constexpr auto format_to(OIter it, Ts... parameters) -> OIter
 template <control_sequence_definition Def, typename OIter, typename... Ts>
 requires call_signature_matches<Def, Ts...> &&
         std::output_iterator<OIter, char>
-constexpr auto format_to(detail::control_sequence_definition_tag<Def>, OIter it, Ts... parameters) -> OIter
+constexpr auto format_to(OIter it, detail::control_sequence_definition_tag<Def>, Ts... parameters) -> OIter
 {
     return format_to<Def>(it, parameters...);
 }
 
 template <control_sequence_definition Def, typename... Ts>
-    requires call_signature_matches<Def, Ts...>
+    requires call_signature_matches<Def, Ts...> &&
+            (!detail::first_element_is_control_sequence_definition_tag<Def>)
 constexpr auto format_to(std::ostream& os, Ts... parameters) -> std::ostream&
 {
     format_to<Def>(std::ostreambuf_iterator{os}, parameters...);
     return os;
 }
 
-template <control_sequence_definition Def, typename OIter, typename... Ts>
-requires call_signature_matches<Def, Ts...> &&
-        std::output_iterator<OIter, char>
-constexpr auto format_to(detail::control_sequence_definition_tag<Def>, std::ostream& os, Ts... parameters) -> OIter
+template <control_sequence_definition Def, typename... Ts>
+requires call_signature_matches<Def, Ts...>
+constexpr auto format_to(std::ostream& os, detail::control_sequence_definition_tag<Def>, Ts... parameters)
+    -> std::ostream&
 {
-    return format_to<Def>(std::ostreambuf_iterator{os}, parameters...);
+    format_to<Def>(std::ostreambuf_iterator{os}, parameters...);
+    return os;
 }
 
 

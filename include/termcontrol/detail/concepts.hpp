@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <concepts>
+#include <tuple>
 
 namespace termcontrol::detail {
 

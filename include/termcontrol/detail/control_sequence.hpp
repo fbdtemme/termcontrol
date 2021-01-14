@@ -39,8 +39,9 @@ struct control_sequence
     static constexpr std::size_t capacity = N;
 
     template <typename... Ts>
-        requires call_signature_matches<definition, Ts...>
-    constexpr explicit control_sequence(Ts... parameters) noexcept
+        requires call_signature_matches<definition, Ts...> &&
+                (!detail::first_element_is_control_sequence_definition_tag<Ts...>)
+        constexpr explicit control_sequence(Ts... parameters) noexcept
             : buffer_()
             , size_()
     {

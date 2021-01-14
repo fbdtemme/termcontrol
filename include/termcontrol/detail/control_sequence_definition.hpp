@@ -20,6 +20,9 @@ concept control_sequence_definition =
 
 namespace detail {
 
+template <control_sequence_definition T>
+struct control_sequence_definition_tag {};
+
 template <typename T> struct default_parameters {};
 
 template <typename T>
@@ -44,8 +47,15 @@ struct is_template_instantiation_of : std::false_type {};
 template <typename... Args, template <typename...> class Template>
 struct is_template_instantiation_of<Template, Template<Args...>> : std::true_type {};
 
-template <template <typename...> class Template, typename T>
+template <typename T, template <typename...> class Template>
 concept is_instantiation_of = is_template_instantiation_of<Template, T>::value;
+
+
+
+template <typename... Args>
+concept first_element_is_control_sequence_definition_tag =
+    (std::tuple_size_v<std::tuple<Args...>> != 0) &&
+    is_instantiation_of<std::tuple_element_t<0, std::tuple<Args...>>, control_sequence_definition_tag>;
 
 //============================================================================//
 // Concepts                                                                   //
@@ -68,14 +78,14 @@ struct is_overload_set_parameter : std::false_type {};
 
 template <typename T>
 struct is_overload_set_parameter<T> :
-        std::bool_constant<detail::is_instantiation_of<overload_set, T>> {};
+        std::bool_constant<detail::is_instantiation_of<T, overload_set>> {};
 
 
 template <typename... Ts>
 struct is_valid_overloaded_sequence_def
 {
     static constexpr bool value = std::apply([](auto... v) {
-        return (detail::is_instantiation_of<argument_pack, decltype(v)> && ...);
+        return (detail::is_instantiation_of<decltype(v), argument_pack> && ...);
     }, typename std::tuple_element_t<0, std::tuple<Ts...>>::type{});
 };
 
@@ -124,7 +134,7 @@ struct basic_control_sequence_definition
     // check at instantiation time
     static_assert(
             std::disjunction_v<std::negation<is_overload_set_parameter<Ts...>>,
-                    is_valid_overloaded_sequence_def<Ts...>>,
+                                             is_valid_overloaded_sequence_def<Ts...>>,
             "Missing argument_pack in definition of control_sequence definition with overloads");
     static constexpr char final_byte = final_byte_;
     using parameters = std::tuple<Ts...>;
@@ -184,8 +194,8 @@ struct overload_set { using type = std::tuple<Ts...>; };
 
 template <typename T>
 concept is_parameter_type_placeholder =
-    is_instantiation_of<argument_pack, T> ||
-    is_instantiation_of<overload_set, T>;
+    is_instantiation_of<T, argument_pack> ||
+    is_instantiation_of<T, overload_set>;
 
 
 template <typename... Ts>
@@ -247,7 +257,7 @@ consteval bool call_signature_matches_overloads_impl(std::tuple<Ts...>)
 
     // variadic<T> : Overload of variable number of parameters of a single type
     using T0 = argument_pack_element<0, TypeList>;
-    if constexpr (is_instantiation_of<variadic, T0>) {
+    if constexpr (is_instantiation_of<T0, variadic>) {
         return (std::is_convertible_v<T0, Ts> && ... );
     }
     if constexpr (std::tuple_size_v<typename TypeList::type> == sizeof...(Ts)) {
@@ -291,9 +301,6 @@ consteval bool call_signature_matches_impl()
 }
 
 
-
-template <control_sequence_definition T>
-struct control_sequence_definition_tag {};
 
 } // namespace detail
 
