@@ -17,8 +17,6 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DTERMCONTROL_BUILD_TESTS=ON .. .
       - name: Build tests
-        run: cmake --build tests
+        run: cmake --build build
       - name: Run tests
         run: cd build && ctest
-      - name: Generate and upload coverage to Codecov
-        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -x gcov-10
