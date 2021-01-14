@@ -3,14 +3,19 @@ project(termcontrol
         LANGUAGES CXX
         VERSION 0.2.0)
 
+include(external/external.cmake)
+include(CTest)
 
 add_library(termcontrol INTERFACE)
 add_library(termcontrol::termcontrol ALIAS termcontrol)
 
+option(TERMCONTROL_BUILD_TESTS "Build tests" ON)
+
 target_compile_features(termcontrol INTERFACE cxx_std_20)
 
-include(CTest)
-include(external/external.cmake)
+
+
+
 
 target_include_directories(${PROJECT_NAME} INTERFACE
         $<INSTALL_INTERFACE:include>
@@ -24,8 +29,7 @@ target_link_libraries(termcontrol
         gsl::gsl-lite-v1
         utf8cpp)
 
-if (BUILD_TESTING)
-    enable_testing()
+if (TERMCONTROL_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
@@ -50,7 +54,6 @@ configure_package_config_file(
         ${termcontrol_project_config_template}
         ${termcontrol_project_config}
         INSTALL_DESTINATION ${termcontrol_cmake_install_dir})
-
 
 # install headers
 install(DIRECTORY ${termcontrol_include_build_dir}

@@ -1,14 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
-find_package(Catch2 REQUIRED)
 include(Catch)
 
 add_executable(termcontrol-tests
         test_control_sequence.cpp
-    test_concepts.cpp
-    test_color.cpp
+        test_concepts.cpp
+        test_color.cpp
         test_parse.cpp
-    main.cpp)
+        main.cpp)
 
 
 target_link_libraries(termcontrol-tests
