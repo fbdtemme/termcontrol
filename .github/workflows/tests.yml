@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: mkdir build && cd build &&
+          cmake -DCMAKE_CXX_COMPILER=g++-10
+          -DCMAKE_BUILD_TYPE=Debug
+          -DTERMCONTROL_BUILD_TESTS=ON .. .
+      - name: Build tests
+        run: cmake --build tests
+      - name: Run tests
+        run: cd build && ctest
+      - name: Generate and upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -x gcov-10

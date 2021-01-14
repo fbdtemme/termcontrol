@@ -4,7 +4,7 @@ include(FetchContent)
 include(GNUInstallDirs)
 
 find_package(ctre QUIET)
-if (ctre_FOUND)
+if (ctre_FOUND OR TARGET ctre::ctre)
     message(STATUS "Local installation of dependency ctre found.")
 else()
     message(STATUS "Fetching dependency ctre ...")
@@ -20,10 +20,9 @@ else()
 endif()
 
 
-find_package(utf8cpp)
-if (utf8cpp_FOUND)
+find_package(utf8cpp QUIET)
+if (utf8cpp_FOUND OR TARGET utf8cpp)
     message(STATUS "Local installation of dependency utf8cpp found.")
-#    add_library(utf8cpp INTERFACE IMPORTED)
 else()
     message(STATUS "Fetching dependency utf8-cpp...")
     FetchContent_Declare(
@@ -38,7 +37,7 @@ include(FetchContent)
 
 
 find_package(gsl-lite QUIET)
-if (gsl-lite_FOUND)
+if (gsl-lite_FOUND OR TARGET gsl::gsl-lite-v1)
     message(STATUS "Local installation of gsl-lite found.")
 else()
     message(STATUS "Fetching dependency gsl-lite...")
@@ -51,8 +50,8 @@ else()
 endif()
 
 
-find_package(fmt QUIET)
-if (fmt_FOUND)
+find_package(fmt QUIET )
+if (fmt_FOUND OR TARGET fmt::fmt)
     message(STATUS "Local installation of dependency fmt found.")
 else()
     message(STATUS "Fetching dependency fmt...")

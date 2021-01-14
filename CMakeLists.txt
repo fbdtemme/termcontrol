@@ -68,27 +68,6 @@ install(TARGETS ${termcontrol_target}
         EXPORT ${termcontrol_targets_export_name}
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-
-if (NOT fmt_FOUND)
-    message(STATUS "Adding fmt to install set")
-    install(TARGETS fmt fmt-header-only
-            EXPORT ${termcontrol_targets_export_name}
-            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-endif()
-
-if (NOT gsl-lite_FOUND)
-    message(STATUS "Adding gsl-lite to install set")
-    install(TARGETS gsl-lite-v1
-            EXPORT ${termcontrol_targets_export_name}
-            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-endif()
-
-if (NOT utf8cpp_FOUND)
-    message(STATUS "Adding utf8cpp to install set")
-    install(TARGETS utf8cpp
-            EXPORT ${termcontrol_targets_export_name}
-            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-endif()
 # Install the export set to enable importing targets from the build tree
 export(EXPORT ${termcontrol_targets_export_name}
         FILE ${termcontrol_targets_file}
