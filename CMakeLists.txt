@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 project(termcontrol
         LANGUAGES CXX
         VERSION 0.2.0)
@@ -14,9 +14,6 @@ option(TERMCONTROL_BUILD_TESTS "Build tests" ON)
 target_compile_features(termcontrol INTERFACE cxx_std_20)
 
 
-
-
-
 target_include_directories(${PROJECT_NAME} INTERFACE
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -26,8 +23,7 @@ target_link_libraries(termcontrol
     INTERFACE
         fmt::fmt
         ctre::ctre
-        gsl::gsl-lite-v1
-        utf8cpp)
+        gsl::gsl-lite-v1)
 
 if (TERMCONTROL_BUILD_TESTS)
     add_subdirectory(tests)

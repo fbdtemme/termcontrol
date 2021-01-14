@@ -1,5 +1,6 @@
 # termcontrol
 
+[![build](https://github.com/fbdtemme/bencode/workflows/build/badge.svg?branch=master)](https://github.com/fbdtemme/termcontrol/actions?query=workflow%3Abuild)
 
 A small C++20 library for ANSI control sequences and terminal bits.
 
