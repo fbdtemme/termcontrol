@@ -3,26 +3,24 @@ cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 include(GNUInstallDirs)
 
-if (TERMCONTROL_BUILD_TESTS)
-    find_package(ctre QUIET)
-    if (ctre_FOUND OR TARGET ctre::ctre)
-        message(STATUS "Local installation of dependency ctre found.")
-    elseif(EXISTS ${CMAKE_CURRENT_LIST_DIR}/ctre)
-        message(STATUS "ctre source directory found")
-        add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/ctre)
-        set(ctre_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/ctre)
-    else()
-        message(STATUS "Fetching dependency ctre ...")
-        FetchContent_Declare(
-                ctre
-                GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
-                GIT_TAG        master
-        )
-        # disable tests
-        set(CTRE_BUILD_TESTS OFF)
-        set(CTRE_BUILD_PACAKGES OFF)
-        FetchContent_MakeAvailable(ctre)
-    endif()
+find_package(ctre QUIET)
+if (ctre_FOUND OR TARGET ctre::ctre)
+    message(STATUS "Local installation of dependency ctre found.")
+elseif(EXISTS ${CMAKE_CURRENT_LIST_DIR}/ctre)
+    message(STATUS "ctre source directory found")
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/ctre)
+    set(ctre_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/ctre)
+else()
+    message(STATUS "Fetching dependency ctre ...")
+    FetchContent_Declare(
+            ctre
+            GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
+            GIT_TAG        master
+    )
+    # disable tests
+    set(CTRE_BUILD_TESTS OFF)
+    set(CTRE_BUILD_PACAKGES OFF)
+    FetchContent_MakeAvailable(ctre)
 endif()
 
 if(IS_DIRECTORY "${ctre_SOURCE_DIR}")

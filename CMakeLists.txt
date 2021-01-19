@@ -82,7 +82,7 @@ if (TERMCONTROL_INSTALL)
 
 endif()
 
-if (NOT ctre_FOUND AND DEFINED ctre-targets)
+if (NOT ctre_FOUND)
     # export ctre target from the build dir
     export(EXPORT ctre-targets
             FILE ctre-targets.cmake
