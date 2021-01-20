@@ -36,8 +36,8 @@ inline auto get_terminal_size() -> terminal_size
     static CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     return terminal_size {
-        .rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1,
-        .cols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+        .rows = static_cast<unsigned short>(csbi.srWindow.Bottom - csbi.srWindow.Top + 1),
+        .cols = static_cast<unsigned short>(csbi.srWindow.Right - csbi.srWindow.Left + 1),
     };
 #endif
 }
