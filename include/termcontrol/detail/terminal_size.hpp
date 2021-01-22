@@ -26,7 +26,18 @@ inline auto get_terminal_size() -> terminal_size
 {
 #if defined(__linux__) || defined(__APPLE__)
     static struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+    int fileno = -1;
+    const auto filenos = std::array{STDOUT_FILENO, STDIN_FILENO, STDERR_FILENO};
+    // Check which if the file descriptors is a tty in case of piped input and output
+    for (int i = 0; i < 3; ++i) {
+        fileno = filenos[i];
+        if (isatty(fileno)) {
+            break;
+        }
+    }
+
+    ioctl(fileno, TIOCGWINSZ, &w);
     return terminal_size {
         .rows = w.ws_row,
         .cols = w.ws_col
