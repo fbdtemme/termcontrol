@@ -11,3 +11,7 @@
 #include "detail/parse.hpp"
 #include "detail/terminal_size.hpp"
 #include "detail/text_style.hpp"
+
+#ifdef _WIN32
+#include "detail/windows.hpp"
+#endif
