@@ -8,6 +8,7 @@
 #include <termcontrol/termcontrol.hpp>
 
 using namespace std::string_view_literals;
+namespace tc = termcontrol;
 
 
 TEST_CASE("test constrol_sequence - cursor up")
@@ -44,5 +45,18 @@ TEST_CASE("test constrol_sequence - cursor up")
     SECTION("conversion to string through implicit string_view") {
         auto ss = std::string(s);
         CHECK(ss == "\033[20A");
+    }
+}
+
+
+TEST_CASE("Test set/reset mode")
+{
+    SECTION("set") {
+        auto str = format(tc::ecma48::set_mode, tc::dec_mode::cursor_visible);
+        CHECK(str == "\033[?25h");
+    }
+    SECTION("reset") {
+        auto str = format(tc::ecma48::reset_mode, tc::dec_mode::cursor_visible);
+        CHECK(str == "\033[?25l");
     }
 }
