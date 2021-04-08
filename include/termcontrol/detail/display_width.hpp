@@ -3,6 +3,7 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+#include "parse.hpp"
 
 /// Use operating system wcwidth, wcswidth if possible
 #ifdef __unix__
@@ -530,7 +531,8 @@ static inline std::wstring utf8_decode(const std::string& str)
 }
 
 static inline int display_width(const std::string& input) {
-    auto wstr = utf8_decode(input);
+    auto stripped_input = strip_control_sequences(input);
+    auto wstr = utf8_decode(stripped_input);
 #ifdef __unix__
     return wcswidth(wstr.c_str(), wstr.size());
 #else
@@ -539,8 +541,9 @@ static inline int display_width(const std::string& input) {
 }
 
 static inline int display_width(const std::wstring& input) {
+    auto stripped_input = strip_control_sequences(input);
 #ifdef __unix__
-    return wcswidth(input.c_str(), input.size());
+    return wcswidth(stripped_input.c_str(), stripped_input.size());
 #else
     return detail::mk_wcswidth(input.c_str(), input.size());
 #endif
