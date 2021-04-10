@@ -521,26 +521,33 @@ static int mk_wcswidth_cjk(const wchar_t* pwcs, size_t n)
 } // namespace detail
 
 // Convert an UTF8 string to a wide Unicode String
-static inline std::wstring utf8_decode(const std::string& str)
+inline std::u32string utf8_decode(const std::string& str)
 {
-    std::wstring wide_line;
+    std::u32string wide_line;
     if (str.empty()) return wide_line;
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> u8towide {};
-    wide_line = u8towide.from_bytes(str);
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert {};
+    wide_line = convert.from_bytes(str);
     return wide_line;
 }
 
-static inline int display_width(const std::string& input) {
-    auto stripped_input = strip_control_sequences(input);
-    auto wstr = utf8_decode(stripped_input);
-#ifdef __unix__
-    return wcswidth(wstr.c_str(), wstr.size());
-#else
-    return detail::mk_wcswidth(wstr.c_str(), wstr.size());
-#endif
+// Convert an UTF8 string to a wide Unicode String
+inline std::string utf8_encode(const std::u32string& str)
+{
+    std::string out;
+    if (str.empty()) return out;
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert {};
+    out = convert.to_bytes(str);
+    return out;
 }
 
-static inline int display_width(const std::wstring& input) {
+
+inline int display_width(const std::string& input) {
+    auto stripped_input = strip_control_sequences(input);
+    auto wstr = utf8_decode(stripped_input);
+    return wstr.size();
+}
+
+inline int display_width(const std::wstring& input) {
     auto stripped_input = strip_control_sequences(input);
 #ifdef __unix__
     return wcswidth(stripped_input.c_str(), stripped_input.size());
