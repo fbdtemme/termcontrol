@@ -21,18 +21,18 @@ constexpr auto total_control_sequences_length(std::string_view text) -> std::siz
     }
     return size;
 }
-//
 
-inline std::string strip_control_sequences(std::string_view text)
+template <typename CharT>
+inline std::basic_string<CharT> strip_control_sequences(std::basic_string_view<CharT> text)
 {
-    std::string out;
+    std::basic_string<CharT> out;
     auto inserter = std::back_inserter(out);
 
     auto match = ctre::search<escape_seq_regex>(text.begin(), text.end());
     auto prev = text.begin();
 
     while (match) {
-        auto m = match.get<0>();
+        auto m = match.template get<0>();
         std::copy(prev, m.begin(), inserter);
         match = ctre::search<escape_seq_regex>(m.end(), text.end());
         prev = m.end();
@@ -41,25 +41,29 @@ inline std::string strip_control_sequences(std::string_view text)
     return out;
 }
 
-inline std::wstring strip_control_sequences(std::wstring_view text)
+inline auto strip_control_sequences(std::string_view text)
 {
-    std::wstring out;
-    auto inserter = std::back_inserter(out);
-
-    auto match = ctre::search<escape_seq_regex>(text.begin(), text.end());
-    auto prev = text.begin();
-
-    while (match) {
-        auto m = match.get<0>();
-        std::copy(prev, m.begin(), inserter);
-        match = ctre::search<escape_seq_regex>(m.end(), text.end());
-        prev = m.end();
-    }
-    std::copy(prev, text.end(), inserter);
-    return out;
+    return strip_control_sequences<char>(text);
 }
-//
-//
 
+inline auto strip_control_sequences(std::wstring_view text)
+{
+    return strip_control_sequences<wchar_t>(text);
+}
+
+inline auto strip_control_sequences(std::u8string_view text)
+{
+   return strip_control_sequences<char8_t>(text);
+}
+
+inline auto strip_control_sequences(std::u16string_view text)
+{
+    return strip_control_sequences<char16_t>(text);
+}
+
+inline auto strip_control_sequences(std::u32string_view text)
+{
+    return strip_control_sequences<char32_t>(text);
+}
 
 }
