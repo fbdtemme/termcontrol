@@ -6,7 +6,11 @@
 #include "parse.hpp"
 
 /// Use operating system wcwidth, wcswidth if possible
-#ifdef __unix__
+#if defined(__linux__)
+#define USE_NATIVE_WCSWIDTH
+#endif
+
+#ifdef USE_NATIVE_WCSWIDTH
 #include <cwchar>
 #endif
 
@@ -549,7 +553,7 @@ inline int display_width(const std::string& input) {
 
 inline int display_width(const std::wstring& input) {
     auto stripped_input = strip_control_sequences(input);
-#ifdef __unix__
+#ifdef USE_NATIVE_WCSWIDTH
     return wcswidth(stripped_input.c_str(), stripped_input.size());
 #else
     return detail::mk_wcswidth(input.c_str(), input.size());
@@ -557,3 +561,5 @@ inline int display_width(const std::wstring& input) {
 }
 
 } // namespace cliprogres
+
+#undef USE_NATIVE_WCSWIDTH
