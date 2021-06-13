@@ -43,7 +43,7 @@ inline auto get_terminal_size() -> terminal_size
         .cols = w.ws_col
     };
 
-#elif _WIN32
+#elif defined(_WIN32)
     static CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     return terminal_size {
