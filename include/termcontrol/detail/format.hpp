@@ -127,6 +127,11 @@ public:
     constexpr explicit format_int(std::uint64_t value)
             : buffer_(), str_(format_decimal(value)) { }
 
+#if defined(__APPLE__)
+    constexpr explicit format_int(std::size_t value)
+            : buffer_(), str_(format_decimal(value)) { }
+#endif
+
     /// Returns the number of characters written to the output buffer.
     constexpr std::size_t size() const noexcept
     { return std::distance(const_cast<const CharT*>(str_), buffer_.end()-1); }
@@ -201,29 +206,33 @@ private:
 /// CTAD deduction guides
 
 template <typename CharT = char>
-format_int(std::uint8_t n) -> format_int<max_formatted_size_v < std::uint8_t>, CharT>;
+format_int(std::uint8_t n) -> format_int<max_formatted_size_v<std::uint8_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint16_t n) -> format_int<max_formatted_size_v < std::uint16_t>, CharT>;
+format_int(std::uint16_t n) -> format_int<max_formatted_size_v<std::uint16_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint32_t n) -> format_int<max_formatted_size_v < std::uint32_t>, CharT>;
+format_int(std::uint32_t n) -> format_int<max_formatted_size_v<std::uint32_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint64_t n) -> format_int<max_formatted_size_v < std::uint64_t>, CharT>;
+format_int(std::uint64_t n) -> format_int<max_formatted_size_v<std::uint64_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int8_t n) -> format_int<max_formatted_size_v < std::int8_t>, CharT>;
+format_int(std::int8_t n) -> format_int<max_formatted_size_v<std::int8_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int16_t n) -> format_int<max_formatted_size_v < std::int16_t>, CharT>;
+format_int(std::int16_t n) -> format_int<max_formatted_size_v<std::int16_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int32_t n) -> format_int<max_formatted_size_v < std::int32_t>, CharT>;
+format_int(std::int32_t n) -> format_int<max_formatted_size_v<std::int32_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int64_t n) -> format_int<max_formatted_size_v < std::int64_t>, CharT>;
+format_int(std::int64_t n) -> format_int<max_formatted_size_v<std::int64_t>, CharT>;
 
+#if defined(__APPLE__)
+template <typename CharT = char>
+format_int(std::size_t n) -> format_int<max_formatted_size_v<std::size_t>, CharT>;
+#endif
 
 template <typename T>
 concept control_sequence_parameter = requires(T) {
