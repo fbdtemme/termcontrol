@@ -101,7 +101,7 @@ struct control_sequence
 
     constexpr auto c_str() const noexcept -> const char*
     {
-        buffer_[size_] == '\0';
+        buffer_[size_] = '\0';
         return buffer_.data();
     }
 

@@ -134,7 +134,7 @@ public:
 
     /// Returns the number of characters written to the output buffer.
     constexpr std::size_t size() const noexcept
-    { return std::distance(const_cast<const CharT*>(str_), buffer_.end()-1); }
+    { return std::distance(buffer_.begin(), buffer_.end()-1); }
 
     /// Returns a pointer to the output buffer content.
     constexpr const CharT* data() const noexcept
@@ -144,7 +144,7 @@ public:
     { return str_; }
 
     constexpr const CharT* end() const noexcept
-    { return buffer_.end()-1; }
+    { return buffer_.data() + buffer_size -1; }
 
     explicit constexpr operator std::string_view() const noexcept
     { return std::string_view(str_, size()); };
