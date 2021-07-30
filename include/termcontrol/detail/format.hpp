@@ -293,6 +293,7 @@ constexpr auto format_parameter(OutputIterator out, emphasis e) -> OutputIterato
     constexpr std::array flags = {
             emphasis::reset,
             emphasis::bold,
+            emphasis::faint,
             emphasis::italic,
             emphasis::underline,
             emphasis::striketrough,
@@ -301,7 +302,7 @@ constexpr auto format_parameter(OutputIterator out, emphasis e) -> OutputIterato
             emphasis::blinking,
             emphasis::reverse,
     };
-    constexpr std::array values {"0", "1", "3", "4", "9", "53", "21", "5", "7"};
+    constexpr std::array values {"0", "1", "2", "3", "4", "9", "53", "21", "5", "7"};
 
     bool needs_seperator = false;
     for (std::size_t i = 0; i < flags.size(); ++i) {
