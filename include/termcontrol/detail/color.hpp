@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <bitset>
 #include <optional>
+#include <compare>
 #include <gsl-lite/gsl-lite.hpp>
 
 #include "bitmask_operators.hpp"
@@ -33,8 +34,13 @@ enum class terminal_color : std::uint8_t {
     bright_white
 };
 
-
 TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(terminal_color, 2);
+
+
+/// 8 bit colors
+enum class terminal_color_256: std::uint8_t { };
+
+TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(terminal_color_256, 3);
 
 template <typename T>
 struct enum_traits;
@@ -705,6 +711,9 @@ public:
     constexpr color_type(terminal_color c)                              // NOLINT
             : color_(std::in_place_type<terminal_color>, c) { }
 
+    constexpr color_type(terminal_color_256 c)                          // NOLINT
+            : color_(std::in_place_type<terminal_color_256>, c) { }
+
     constexpr color_type(rgb_color c)                                   // NOLINT
             : color_(c) { }
 
@@ -720,14 +729,23 @@ public:
     constexpr auto is_terminal_color() -> bool
     { return std::holds_alternative<terminal_color>(color_); };
 
+    constexpr auto is_terminal_color_256() -> bool
+    { return std::holds_alternative<terminal_color_256>(color_); };
+
     constexpr auto get_rgb_color() -> rgb_color
     { return std::get<rgb_color>(color_); }
 
     constexpr auto get_terminal_color() -> terminal_color
     { return std::get<terminal_color>(color_); }
 
+    constexpr auto get_terminal_color_256() -> bool
+    { return std::holds_alternative<terminal_color_256>(color_); };
+
+    constexpr bool operator==(const color_type& other) const noexcept
+    { return color_ == other.color_; }
+
 private:
-    std::variant<terminal_color, rgb_color> color_;
+    std::variant<terminal_color, terminal_color_256, rgb_color> color_;
 };
 
 } // namespace termcontrol

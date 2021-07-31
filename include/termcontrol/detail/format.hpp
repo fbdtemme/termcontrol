@@ -278,6 +278,15 @@ constexpr auto format_parameter(OutputIterator out, graphics_rendition_attribute
 }
 
 /// Format enums to their values but with different buffer size
+
+
+template <typename OutputIterator>
+constexpr auto format_parameter(OutputIterator out, terminal_color_256 value) -> OutputIterator
+{
+    out = format_parameter(out, static_cast<std::underlying_type_t<terminal_color_256>>(value));
+    return out;
+}
+
 template <typename OutputIterator>
 constexpr auto format_parameter(OutputIterator out, rgb_color value) -> OutputIterator
 {
@@ -417,6 +426,10 @@ constexpr auto format_parameter(OutputIterator out, const text_style& s) -> Outp
             for (const char c: "38;2;") *out++ = c;
             out = format_parameter(out, fg_color.get_rgb_color());
         }
+        else if (fg_color.is_terminal_color_256()) {
+            for (const char c: "38;5;") *out++ = c;
+            out = format_parameter(out, fg_color.get_terminal_color_256());
+        }
         else {
             out = format_parameter(out, std::uint8_t(fg_color.get_terminal_color()));
         }
@@ -428,6 +441,10 @@ constexpr auto format_parameter(OutputIterator out, const text_style& s) -> Outp
         if (bg_color.is_rgb_color()) {
             for (const char c: "48;2;") *out++ = c;
             out = format_parameter(out, bg_color.get_rgb_color());
+        }
+        else if (bg_color.is_terminal_color_256()) {
+            for (const char c: "48;5;") *out++ = c;
+            out = format_parameter(out, bg_color.get_terminal_color_256());
         }
         else {
             out = format_parameter(out, std::uint8_t(bg_color.get_terminal_color())+10);
