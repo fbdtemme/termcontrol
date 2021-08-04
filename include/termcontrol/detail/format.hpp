@@ -139,7 +139,7 @@ public:
     { return str_; }
 
     constexpr const CharT* end() const noexcept
-    { return buffer_.end()-1; }
+    { return buffer_.data() + buffer_.size() -1; }
 
     explicit constexpr operator std::string_view() const noexcept
     { return std::string_view(str_, size()); };
