@@ -127,9 +127,14 @@ public:
     constexpr explicit format_int(std::uint64_t value)
             : buffer_(), str_(format_decimal(value)) { }
 
+#if defined(__APPLE__)
+    constexpr explicit format_int(std::size_t value)
+            : buffer_(), str_(format_decimal(value)) { }
+#endif
+
     /// Returns the number of characters written to the output buffer.
     constexpr std::size_t size() const noexcept
-    { return std::distance(const_cast<const CharT*>(str_), buffer_.end()-1); }
+    { return std::distance(buffer_.begin(), buffer_.end()-1); }
 
     /// Returns a pointer to the output buffer content.
     constexpr const CharT* data() const noexcept
@@ -139,7 +144,7 @@ public:
     { return str_; }
 
     constexpr const CharT* end() const noexcept
-    { return buffer_.data() + buffer_.size() -1; }
+    { return buffer_.data() + buffer_size -1; }
 
     explicit constexpr operator std::string_view() const noexcept
     { return std::string_view(str_, size()); };
@@ -201,29 +206,33 @@ private:
 /// CTAD deduction guides
 
 template <typename CharT = char>
-format_int(std::uint8_t n) -> format_int<max_formatted_size_v < std::uint8_t>, CharT>;
+format_int(std::uint8_t n) -> format_int<max_formatted_size_v<std::uint8_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint16_t n) -> format_int<max_formatted_size_v < std::uint16_t>, CharT>;
+format_int(std::uint16_t n) -> format_int<max_formatted_size_v<std::uint16_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint32_t n) -> format_int<max_formatted_size_v < std::uint32_t>, CharT>;
+format_int(std::uint32_t n) -> format_int<max_formatted_size_v<std::uint32_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::uint64_t n) -> format_int<max_formatted_size_v < std::uint64_t>, CharT>;
+format_int(std::uint64_t n) -> format_int<max_formatted_size_v<std::uint64_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int8_t n) -> format_int<max_formatted_size_v < std::int8_t>, CharT>;
+format_int(std::int8_t n) -> format_int<max_formatted_size_v<std::int8_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int16_t n) -> format_int<max_formatted_size_v < std::int16_t>, CharT>;
+format_int(std::int16_t n) -> format_int<max_formatted_size_v<std::int16_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int32_t n) -> format_int<max_formatted_size_v < std::int32_t>, CharT>;
+format_int(std::int32_t n) -> format_int<max_formatted_size_v<std::int32_t>, CharT>;
 
 template <typename CharT = char>
-format_int(std::int64_t n) -> format_int<max_formatted_size_v < std::int64_t>, CharT>;
+format_int(std::int64_t n) -> format_int<max_formatted_size_v<std::int64_t>, CharT>;
 
+#if defined(__APPLE__)
+template <typename CharT = char>
+format_int(std::size_t n) -> format_int<max_formatted_size_v<std::size_t>, CharT>;
+#endif
 
 template <typename T>
 concept control_sequence_parameter = requires(T) {
@@ -269,6 +278,15 @@ constexpr auto format_parameter(OutputIterator out, graphics_rendition_attribute
 }
 
 /// Format enums to their values but with different buffer size
+
+
+template <typename OutputIterator>
+constexpr auto format_parameter(OutputIterator out, terminal_color_256 value) -> OutputIterator
+{
+    out = format_parameter(out, static_cast<std::underlying_type_t<terminal_color_256>>(value));
+    return out;
+}
+
 template <typename OutputIterator>
 constexpr auto format_parameter(OutputIterator out, rgb_color value) -> OutputIterator
 {
@@ -284,6 +302,7 @@ constexpr auto format_parameter(OutputIterator out, emphasis e) -> OutputIterato
     constexpr std::array flags = {
             emphasis::reset,
             emphasis::bold,
+            emphasis::faint,
             emphasis::italic,
             emphasis::underline,
             emphasis::striketrough,
@@ -292,7 +311,7 @@ constexpr auto format_parameter(OutputIterator out, emphasis e) -> OutputIterato
             emphasis::blinking,
             emphasis::reverse,
     };
-    constexpr std::array values {"0", "1", "3", "4", "9", "53", "21", "5", "7"};
+    constexpr std::array values {"0", "1", "2", "3", "4", "9", "53", "21", "5", "7"};
 
     bool needs_seperator = false;
     for (std::size_t i = 0; i < flags.size(); ++i) {
@@ -407,6 +426,10 @@ constexpr auto format_parameter(OutputIterator out, const text_style& s) -> Outp
             for (const char c: "38;2;") *out++ = c;
             out = format_parameter(out, fg_color.get_rgb_color());
         }
+        else if (fg_color.is_terminal_color_256()) {
+            for (const char c: "38;5;") *out++ = c;
+            out = format_parameter(out, fg_color.get_terminal_color_256());
+        }
         else {
             out = format_parameter(out, std::uint8_t(fg_color.get_terminal_color()));
         }
@@ -418,6 +441,10 @@ constexpr auto format_parameter(OutputIterator out, const text_style& s) -> Outp
         if (bg_color.is_rgb_color()) {
             for (const char c: "48;2;") *out++ = c;
             out = format_parameter(out, bg_color.get_rgb_color());
+        }
+        else if (bg_color.is_terminal_color_256()) {
+            for (const char c: "48;5;") *out++ = c;
+            out = format_parameter(out, bg_color.get_terminal_color_256());
         }
         else {
             out = format_parameter(out, std::uint8_t(bg_color.get_terminal_color())+10);

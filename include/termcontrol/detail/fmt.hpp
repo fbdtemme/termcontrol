@@ -21,7 +21,7 @@ auto format(text_style style, std::string_view fmt_string, Ts&& ... args) -> std
     std::string s{};
     auto out = std::back_inserter(s);
     out = termcontrol::format_to<sgr>(out, style);
-    out = fmt::format_to(out, fmt_string, std::forward<Ts>(args)...);
+    out = fmt::format_to(out, fmt::runtime(fmt_string), std::forward<Ts>(args)...);
     out = termcontrol::format_to<sgr>(out, text_style::reset());
     return s;
 }
@@ -32,7 +32,7 @@ auto format_to(OIter out, text_style style, std::string_view fmt_string, Ts&& ..
 {
     using namespace termcontrol::definition_acronyms;
     out = termcontrol::format_to<sgr>(out, style);
-    out = fmt::format_to(out, fmt_string, std::forward<Ts>(args)...);
+    out = fmt::format_to(out, fmt::runtime(fmt_string), std::forward<Ts>(args)...);
     out = termcontrol::format_to<sgr>(out, text_style::reset());
     return out;
 }

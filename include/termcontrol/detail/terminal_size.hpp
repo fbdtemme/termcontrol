@@ -4,10 +4,10 @@
 #include <csignal>
 #include <atomic>
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
     #include <sys/ioctl.h>
     #include <unistd.h>
-#elif _WIN32
+#elif defined(_WIN32)
     #include <windows.h>
 #endif
 

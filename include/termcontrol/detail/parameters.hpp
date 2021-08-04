@@ -223,13 +223,14 @@ TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(graphics_rendition_attribute, 2);
 enum class emphasis : std::uint16_t {
     reset            = 1,
     bold             = 1 << 1,
-    italic           = 1 << 2,
-    underline        = 1 << 3,
-    striketrough     = 1 << 4,
-    overline         = 1 << 5,
-    double_underline = 1 << 6,
-    blinking         = 1 << 7,
-    reverse          = 1 << 8
+    faint            = 1 << 2,
+    italic           = 1 << 3,
+    underline        = 1 << 4,
+    striketrough     = 1 << 5,
+    overline         = 1 << 6,
+    double_underline = 1 << 7,
+    blinking         = 1 << 8,
+    reverse          = 1 << 9
 };
 
 TERMCONTROL_DEFINE_MAX_FORMATTED_SIZE(emphasis, 18);
