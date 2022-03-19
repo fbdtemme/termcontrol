@@ -54,7 +54,7 @@ public:
         }
     }
 
-    void disable_utf8() {
+    void restore_codepoint() {
         if (!SetConsoleOutputCP(original_out_cp_)) {
             throw win32_terminal_error("Could not restore console output code point");
         }
@@ -76,7 +76,7 @@ public:
         return true;
     }
 
-    void disable_virtual_terminal_processing() {
+    void restore_console_mode() {
         DWORD out_mode = original_out_mode_;
         if (! SetConsoleMode(handle_out, out_mode)) {
             throw win32_terminal_error("Could not restore console output mode");
