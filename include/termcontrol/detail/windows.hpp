@@ -3,52 +3,88 @@
 #include <cstdio>
 #include <cwchar>
 #include <windows.h>
+#include <stdexcept>
 
 namespace termcontrol {
 
-/// Enable virtual terminal processing on windows
-/// @returns True on success, false otherwise
-inline bool enable_virtual_terminal_processing() noexcept
-{
-    // Set output mode to handle virtual terminal sequences
-    HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (handle_out == INVALID_HANDLE_VALUE) {
-        return false;
-    }
-    HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
-    if (handle_in == INVALID_HANDLE_VALUE) {
-        return false;
-    }
+class win32_terminal_error: public std::runtime_error {
+    using std::runtime_error::runtime_error;
+};
 
-    DWORD original_out_mode = 0;
-    DWORD original_in_mode = 0;
-    if (! GetConsoleMode(handle_out, &original_out_mode)) {
-        return false;
-    }
-    if (! GetConsoleMode(handle_in, &original_in_mode)) {
-        return false;
-    }
+class win32_terminal {
+private:
+    static DWORD vt_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+    static DWORD vt_in_modes = ENABLE_VIRTUAL_TERMINAL_INPUT;
 
-    DWORD requested_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-    DWORD requested_in_modes = ENABLE_VIRTUAL_TERMINAL_INPUT;
+public:
+    win32_terminal()
+    {
+        handle_out_ = GetStdHandle(STD_OUTPUT_HANDLE);
+        handle_in_ = GetStdHandle(STD_INPUT_HANDLE);
 
-    DWORD out_mode = original_out_mode | requested_out_modes;
-    if (! SetConsoleMode(handle_out, out_mode)) {
-        // we failed to set both modes, try to step down mode gracefully.
-        requested_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-        out_mode = original_out_mode | requested_out_modes;
-        if (!SetConsoleMode(handle_out, out_mode)) {
-            // Failed to set any VT mode, can't do anything here.
-            return false;
+        if (handle_out_ == INVALID_HANDLE_VALUE) {
+           throw win32_terminal_error("Invalid output handle value");
+        }
+        if (handle_in_ == INVALID_HANDLE_VALUE) {
+            throw win32_terminal_error("Invalid input handle value");
+        }
+        if (!GetConsoleMode(handle_out_, &original_out_mode_)) {
+            throw win32_terminal_error("Could not retrieve output console mode");
+        }
+        if (!GetConsoleMode(handle_in_, &original_in_mode_)) {
+            throw win32_terminal_error("Could not retrieve input console mode");
         }
     }
 
-    DWORD in_mode = original_in_mode | ENABLE_VIRTUAL_TERMINAL_INPUT;
-    if (!SetConsoleMode(handle_in, in_mode)) {
-        // Failed to set VT input mode, can't do anything here.
-        return false;
+    void enable_virtual_terminal_processing() {
+        DWORD out_mode = original_out_mode_ | vt_out_modes;
+        if (! SetConsoleMode(handle_out, out_mode)) {
+            throw win32_terminal_error("Could not set console output mode");
+        }
+
+        DWORD in_mode = original_in_mode_ | vt_in_modes;
+        if (!SetConsoleMode(handle_in, in_mode)) {
+            throw win32_terminal_error("Could not set console input mode");
+        }
+        return true;
     }
-    return true;
-}
+
+    void disable_virtual_terminal_processing() {
+        DWORD out_mode = original_out_mode_;
+        if (! SetConsoleMode(handle_out, out_mode)) {
+            throw win32_terminal_error("Could not restore console output mode");
+        }
+
+        DWORD in_mode = original_in_mode_;
+        if (!SetConsoleMode(handle_in, in_mode)) {
+            throw win32_terminal_error("Could not restore console input mode");
+        }
+        return true;
+    }
+
+private:
+    HANDLE handle_out_ = nullptr;
+    HANDLE handle_in_ = nullptr;
+
+    DWORD original_out_mode_ = 0;
+    DWORD original_in_mode_ = 0;
+};
+
+class win32_virtual_terminal_processing_guard {
+public:
+    win32_virtual_terminal_processing_guard()
+        : terminal_()
+    {
+        terminal_.enable_virtual_terminal_processing();
+    }
+
+    ~win32_virtual_terminal_processing_guard()
+    {
+        terminal_.disable_virtual_terminal_processing();
+    }
+
+private:
+    win32_terminal terminal_;
+};
 
 } // namespace termcontrol
