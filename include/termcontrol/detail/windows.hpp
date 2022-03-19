@@ -100,21 +100,5 @@ private:
     UINT original_out_cp_ = 0;
 };
 
-class win32_virtual_terminal_processing_guard {
-public:
-    win32_virtual_terminal_processing_guard()
-        : terminal_()
-    {
-        terminal_.enable_virtual_terminal_processing();
-    }
-
-    ~win32_virtual_terminal_processing_guard()
-    {
-        terminal_.disable_virtual_terminal_processing();
-    }
-
-private:
-    win32_terminal terminal_;
-};
 
 } // namespace termcontrol
