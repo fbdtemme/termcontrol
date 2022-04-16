@@ -13,16 +13,16 @@ class win32_terminal_error: public std::runtime_error {
 
 class win32_terminal {
 private:
-    static DWORD vt_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-    static DWORD vt_in_modes = ENABLE_VIRTUAL_TERMINAL_INPUT;
+    static constexpr DWORD vt_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+    static constexpr DWORD vt_in_modes = ENABLE_VIRTUAL_TERMINAL_INPUT;
 
 public:
     win32_terminal()
     {
         handle_out_ = GetStdHandle(STD_OUTPUT_HANDLE);
         handle_in_ = GetStdHandle(STD_INPUT_HANDLE);
-        input_cp_ = GetConsoleCP();
-        output_cp_ = GetConsoleOutputCP();
+        original_in_cp_ = GetConsoleCP();
+        original_out_cp_ = GetConsoleOutputCP();
 
         if (handle_out_ == INVALID_HANDLE_VALUE) {
            throw win32_terminal_error("Invalid output handle value");
@@ -30,10 +30,10 @@ public:
         if (handle_in_ == INVALID_HANDLE_VALUE) {
             throw win32_terminal_error("Invalid input handle value");
         }
-        if (input_cp_ == 0) {
+        if (original_in_cp_ == 0) {
             throw win32_terminal_error("Could not get console input code point");
         }
-        if (output_cp_ == 0) {
+        if (original_out_cp_ == 0) {
             throw win32_terminal_error("Could not get console input code point");
         }
 
@@ -65,28 +65,26 @@ public:
 
     void enable_virtual_terminal_processing() {
         DWORD out_mode = original_out_mode_ | vt_out_modes;
-        if (! SetConsoleMode(handle_out, out_mode)) {
+        if (! SetConsoleMode(handle_out_, out_mode)) {
             throw win32_terminal_error("Could not set console output mode");
         }
 
         DWORD in_mode = original_in_mode_ | vt_in_modes;
-        if (!SetConsoleMode(handle_in, in_mode)) {
+        if (!SetConsoleMode(handle_in_, in_mode)) {
             throw win32_terminal_error("Could not set console input mode");
         }
-        return true;
     }
 
     void restore_console_mode() {
         DWORD out_mode = original_out_mode_;
-        if (! SetConsoleMode(handle_out, out_mode)) {
+        if (! SetConsoleMode(handle_out_, out_mode)) {
             throw win32_terminal_error("Could not restore console output mode");
         }
 
         DWORD in_mode = original_in_mode_;
-        if (!SetConsoleMode(handle_in, in_mode)) {
+        if (!SetConsoleMode(handle_in_, in_mode)) {
             throw win32_terminal_error("Could not restore console input mode");
         }
-        return true;
     }
 
 private:
