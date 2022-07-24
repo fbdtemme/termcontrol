@@ -2,8 +2,11 @@
 
 #include <cstdio>
 #include <cwchar>
-#include <windows.h>
 #include <stdexcept>
+
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 namespace termcontrol {
 
