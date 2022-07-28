@@ -8,7 +8,7 @@ add_executable(termcontrol-tests
         test_concepts.cpp
         test_color.cpp
         test_parse.cpp
-)
+        test_windows.cpp)
 
 
 target_link_libraries(termcontrol-tests
