@@ -1,7 +1,7 @@
 //
 // Created by fbdtemme on 12/01/2020.
 //
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 #include <type_traits>
 #include <string_view>
 

@@ -2,8 +2,7 @@
 // Created by fbdtemme on 25/01/2020.
 //
 
-#include <catch2/catch.hpp>
-
+#include <catch2/catch_test_macros.hpp>
 #include <termcontrol/termcontrol.hpp>
 
 TEST_CASE("test parse")

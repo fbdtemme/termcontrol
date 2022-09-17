@@ -3,8 +3,13 @@ project(termcontrol
         LANGUAGES CXX
         VERSION 0.3.0)
 
-include(external/external.cmake)
+include(GNUInstallDirs)
 include(CTest)
+
+find_package(fmt CONFIG REQUIRED)
+find_package(expected-lite CONFIG REQUIRED)
+find_package(gsl-lite CONFIG REQUIRED)
+find_package(ctre CONFIG REQUIRED)
 
 add_library(termcontrol INTERFACE)
 add_library(termcontrol::termcontrol ALIAS termcontrol)
