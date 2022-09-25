@@ -17,7 +17,6 @@ add_library(termcontrol::termcontrol ALIAS termcontrol)
 option(TERMCONTROL_BUILD_TESTS "Build tests" ON)
 option(TERMCONTROL_INSTALL "Create an install target" ON)
 
-
 target_compile_features(termcontrol INTERFACE cxx_std_20)
 
 
@@ -35,6 +34,7 @@ target_link_libraries(termcontrol
 if (TERMCONTROL_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
+
 
 
 if (TERMCONTROL_INSTALL)
@@ -85,11 +85,4 @@ if (TERMCONTROL_INSTALL)
             NAMESPACE ${termcontrol_namespace}::
             DESTINATION ${termcontrol_cmake_install_dir})
 
-endif()
-
-if (NOT ctre_FOUND)
-    # export ctre target from the build dir
-    export(EXPORT ctre-targets
-            FILE ctre-targets.cmake
-            NAMESPACE ctre::)
 endif()
