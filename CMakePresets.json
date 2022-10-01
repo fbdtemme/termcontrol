@@ -2,36 +2,63 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "debug",
-      "displayName": "Debug Config",
-      "description": "Default debug build using Ninja generator",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/cmake-build-debug",
+      "name": "common",
+      "generator": "Ninja Multi-Config",
       "environment": {
         "VCPKG_ROOT": "${sourceDir}/vcpkg"
       },
       "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "hidden": true
+    },
+    {
+      "name": "features-tests",
+      "hidden": true,
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "VCPKG_MANIFEST_FEATURES": "tests"
+        "VCPKG_MANIFEST_FEATURES": "tests",
+        "TERMCONTROL_BUILD_TESTS": "ON"
       }
     },
     {
-      "name": "release",
-      "displayName": "Release Config",
-      "description": "Default debug build using Ninja generator",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/cmake-build-release",
-      "environment": {
-        "VCPKG_ROOT": "${sourceDir}/vcpkg"
-      },
-      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "VCPKG_MANIFEST_FEATURES": "tests"
-      }
+      "name": "linux",
+      "inherits": ["common", "features-tests"],
+      "binaryDir": "${sourceDir}/cmake-build-linux"
+    },
+    {
+      "name": "windows",
+      "inherits": ["common", "features-tests"],
+      "binaryDir": "${sourceDir}/cmake-build-windows"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux",
+      "configuration": "Debug"
+    },
+    {
+      "name": "linux-release",
+      "configurePreset": "linux",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-relwithdebinfo",
+      "configurePreset": "linux",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-relwithdebinfo",
+      "configurePreset": "windows",
+      "configuration": "RelWithDebInfo"
     }
   ]
 }
