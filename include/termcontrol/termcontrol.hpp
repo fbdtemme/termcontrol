@@ -1,5 +1,10 @@
 #pragma once
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#endif
+
 #include "detail/ascii.hpp"
 #include "detail/color.hpp"
 #include "detail/control_sequence.hpp"
@@ -14,4 +19,9 @@
 
 #ifdef _WIN32
 #include "detail/windows.hpp"
+#endif
+
+#ifdef _WIN32
+#undef WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #endif

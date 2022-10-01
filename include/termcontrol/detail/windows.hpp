@@ -6,13 +6,9 @@
 #include <fmt/format.h>
 
 #define WIN32_LEAN_AND_MEAN
-#ifdef NOMINMAX
-#include <windows.h>
-#else
 #define NOMINMAX
 #include <windows.h>
 #undef NOMINMAX
-#endif
 
 namespace termcontrol {
 
