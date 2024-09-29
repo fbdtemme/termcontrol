@@ -19,7 +19,7 @@ class win32_terminal_error: public std::runtime_error {
 class win32_terminal {
 private:
     static constexpr DWORD vt_out_modes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-    static constexpr DWORD vt_in_modes = ENABLE_VIRTUAL_TERMINAL_INPUT;
+    static constexpr DWORD vt_in_modes  = ENABLE_VIRTUAL_TERMINAL_INPUT;
 
 public:
     win32_terminal()

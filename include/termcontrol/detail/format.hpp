@@ -591,35 +591,4 @@ constexpr auto format_to(std::ostream& os, detail::control_sequence_definition_t
 }
 
 
-
-//template <control_sequence_definition Def, typename OIter, typename... Ts>
-//requires call_signature_matches<Def, Ts...> &&
-//        std::output_iterator<OIter, char>
-//constexpr auto format_to(OIter it, Ts... parameters) -> OIter;
-//
-
-//// TODO: Implement format_to_n.
-///// Write a control sequence formatted with `parameters` to output range `out` not exceeding n.
-
-//template <typename OutputIt>
-//struct format_to_n_result_t
-//{
-//    OutputIt out;
-//    std::size_t size;
-//};
-//
-//template <control_sequence_definition Def, typename OIter, typename... Ts>
-//    requires call_signature_matches<Def, Ts...>
-//constexpr auto format_to_n(OIter it, typename std::iterator_traits<OIter>::difference_type n, Ts... parameters)
-//       -> format_to_n_result_t<OIter>;
-//
-//template <control_sequence_definition Def, typename OIter, typename... Ts>
-//requires call_signature_matches<Def, Ts...>
-//constexpr auto format_to_n(OIter it, typename std::iterator_traits<OIter>::difference_type n, Ts... parameters)
-//        -> format_to_n_result_t<OIter>
-//{
-//    format_to_n<Def>(it, std::forward<Ts>(parameters)...);
-//}
-
-
 } // namespace termcontrol
